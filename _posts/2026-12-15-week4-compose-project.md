@@ -173,6 +173,8 @@ docker compose down
 
 ## 목요일 · 팀원이 내 README만 보고 재현할 수 있을까?
 
+**교차 검증 시작** — [4주차 실습 저장소의 README](https://github.com/wjsworud1025/linux-study-week4-lab#readme)를 다른 팀원에게 전달합니다. 검증자는 새 디렉터리에 복제한 뒤 README만 따라 기동하고, 교체 전후의 DB 컨테이너 ID와 방문 번호를 기록합니다. 마치면 [결과 체크리스트](https://github.com/wjsworud1025/linux-study-week4-lab/issues/new?template=cross-check.md)를 작성하고 이슈 주소를 개인 실습 기록에 덧붙이세요. 작성자는 검증자가 혼자 막힌 지점을 먼저 기록한 다음 도와줍니다.
+
 **빈칸 과제** — 진행자는 화요일 완성본을 참고용으로 두고 아래 세 조각을 보여 줍니다. 팀원은 각 줄이 어느 파일의 어느 위치에 들어가는지 설명하고, 자신의 Dockerfile과 Compose 파일에서 해당 줄을 완성합니다. 조각은 각각 기존 한 줄을 대체합니다.
 
 ```text
