@@ -1,0 +1,39 @@
+name: Verify weekly examples
+on:
+  push:
+    branches: [verify/weekly-examples-a032745]
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run week 2 and 3 exercises
+        run: |
+          bash verification/w2.sh | tee /tmp/w2.txt
+          bash verification/w3.sh | tee /tmp/w3.txt
+        shell: bash
+      - name: Prepare app from the published guide
+        shell: python
+        run: |
+          import pathlib,re
+          p=pathlib.Path('app')
+          (p/'site').mkdir(parents=True)
+          s=next(pathlib.Path('_posts').glob('*week4-compose*')).read_text()
+          for name,end in [('app.py','PY'),('Dockerfile','EOF'),('docker-compose.yml','YAML')]:
+              (p/name).write_text(s.split(f"cat > {name} <<'{end}'\n")[1].split(f'\n{end}\n')[0]+'\n')
+          (p/'site/index.html').write_text('<h1>스터디 소개</h1>\n')
+          (p/'requirements.txt').write_text('psycopg[binary]>=3.2,<4\n')
+          (p/'.dockerignore').write_text('.env\n.git\n')
+          import secrets
+          (p/'.env').write_text('DB_PASSWORD='+secrets.token_hex(24)+'\n')
+      - name: Run week 4 exercise
+        working-directory: app
+        shell: bash
+        run: bash ../verification/w4.sh | tee /tmp/w4.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: observed-output
+          path: /tmp/w[234].txt
