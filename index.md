@@ -25,6 +25,7 @@ title: 전체 일정
 화요일 전에는 네 파트의 핵심 개념과 예상 결과를 개인 글 한 편에 정리합니다. 발표자는 8분 동안 결과 하나를 보여 주고, 목요일에는 같은 글에 새 조건에서의 예상·실제 출력·차이의 이유를 덧붙입니다. [첫 글 작성 방법]({{ '/guides/week-0/' | relative_url }})
 
 <h2 id="team-records">팀원 실습 기록</h2>
+<p><a href="{{ '/records/template/' | relative_url }}">주간 실습 기록 템플릿 열기</a> · <a href="https://raw.githubusercontent.com/wjsworud1025/linux-study/main/_includes/weekly-record.md">마크다운 원본</a></p>
 {% assign record_count = 0 %}
 <ul>
 {% for entry in site.posts %}
