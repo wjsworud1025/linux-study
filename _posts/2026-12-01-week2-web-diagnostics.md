@@ -1,5 +1,6 @@
 ---
 permalink: /guides/week-2/
+study_guide: true
 layout: post
 title: "2주차 실습 가이드 · 웹 서버 접속 문제 진단하기"
 date: 2026-12-01 09:00:00 +0900
@@ -25,6 +26,8 @@ sudo apt install python3 curl netcat-openbsd openssh-server
 ```
 
 ## 화요일 · 네 파트 시연
+
+**발표 인계** — ①~③은 같은 VM과 같은 첫 터미널을 사용합니다. ①이 요청 로그를 보여 주고 셸을 인계하면 ②가 그 셸의 PID를 확인합니다. ③은 실제 포트에서 HTTP 200을 확인한 뒤 서버를 종료합니다. 추가 요청에만 두 번째 터미널을 씁니다. ④는 키로 접속한 계정명을 보여 줍니다.
 
 ### ① 로그에서 요청 한 건 찾기
 
@@ -82,11 +85,12 @@ ssh -o PasswordAuthentication=no -i ~/.ssh/study-week2 "$USER@localhost" whoami
 
 ## 목요일 · “안내받은 주소에서 페이지가 안 열려요”
 
-**진행자 준비** — 각 VM에서 `ss -tln`으로 8080과 대체 포트가 비어 있는지 확인합니다. 대체 포트는 아래 예시를 바꿔도 됩니다. 화요일 서버는 먼저 종료하세요. 팀원에게는 안내 주소 `http://127.0.0.1:8080`만 전달합니다.
+**진행자 준비** — 각 VM에서 `ss -tln`으로 8080과 대체 포트가 비어 있는지 확인합니다. 진행자가 매번 다른 빈 포트를 고르고 팀원에게 값을 공개하지 않습니다. 화요일 서버는 먼저 종료하세요. 팀원에게는 안내 주소 `http://127.0.0.1:8080`만 전달합니다.
 
 ```bash
 cd ~/linux-study/week2
-python3 -u -m http.server 8181 --bind 127.0.0.1 --directory ../week1/site >logs/challenge.log 2>&1 &
+read -rp "진행자가 선택한 빈 포트: " challenge_port
+python3 -u -m http.server "$challenge_port" --bind 127.0.0.1 --directory ../week1/site >logs/challenge.log 2>&1 &
 challenge_pid=$!
 ```
 
@@ -113,6 +117,8 @@ grep '__3__' logs/challenge.log | tail -n 1
 - [ ] 없는 페이지의 404 응답과 요청 경로가 함께 찍힌 로그 한 줄을 제시했습니다.
 - [ ] 잘못된 포트에서는 서버에 연결하지 못했고, 404에서는 서버가 요청을 받아 응답했다는 차이를 설명했습니다.
 
-**정답 예시** — ① `8181`, ② `index.html`, ③ `404`. 팀 블로그에는 최초 증상, 실제 포트를 찾은 명령, 응답과 로그를 순서대로 남깁니다. 진행자는 서버를 시작했던 터미널에서 `kill "$challenge_pid"`로 정리합니다.
+**정답 예시** — ① 해당 VM의 `ss -tlnp`에서 관찰한 값, ② `index.html`, ③ `404`. 팀 블로그에는 최초 증상, 실제 포트를 찾은 명령, 응답과 로그를 순서대로 남깁니다. 진행자는 서버를 시작했던 터미널에서 `kill "$challenge_pid"`로 정리합니다.
 
 **다음 주 준비** — 우분투에 Docker Engine과 Compose 플러그인을 준비한 뒤 `docker run --rm hello-world`와 `docker compose version`을 실행합니다. VM에서 Docker에 관리자 권한이 필요한 경우 이번 과정의 Docker 명령에 `sudo`를 붙여 사용합니다. [우분투용 Docker 설치 안내](https://docs.docker.com/engine/install/ubuntu/)
+
+**개인 기록** — 화요일 전에 작성한 글에 목요일 예상, 실제 출력, 차이의 이유를 덧붙입니다. [팀원 실습 기록 보기]({{ '/' | relative_url }}#team-records)

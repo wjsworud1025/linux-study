@@ -1,5 +1,6 @@
 ---
 permalink: /guides/week-4/
+study_guide: true
 layout: post
 title: "4주차 실습 가이드 · 소개 페이지와 방문 기록 DB를 다른 팀원 환경에서 재현하기"
 date: 2026-12-15 09:00:00 +0900
@@ -12,7 +13,9 @@ tags: [ubuntu, docker]
 
 이번 주에는 **소개 페이지를 한 번 열 때마다 DB에 방문 번호를 하나 기록**합니다. 마지막에는 팀원이 내 README만 보고 서비스를 실행하고 첫 방문 기록까지 다시 읽어야 합니다. GitHub Pages에는 실습 글을 게시하고, 아래 앱은 각자의 우분투 VM에서 실행합니다.
 
-## 진행자 제공 · 앱 골격 준비
+## 화요일 전 · 앱 골격과 README 초안 준비
+
+진행자는 아래 앱 골격을 먼저 공유합니다. 각자 README에 필요한 도구, 로컬 암호 설정, 기동 명령, 접속 주소와 방문 번호 확인 방법을 작성하고 필요한 이미지를 미리 받습니다.
 
 우분투에서 `docker version`과 `docker compose version`을 확인합니다. 다음 블록은 새 `week4` 디렉터리에서 한 번 실행하세요. 웹 서버는 `/` 요청을 기록하고, `/visits` 요청에는 기존 번호 목록만 반환합니다.
 
@@ -166,6 +169,8 @@ docker compose down
 
 `depends_on`의 `service_healthy` 조건은 DB의 상태 검사가 통과한 뒤 웹을 시작하게 합니다. `down`은 컨테이너를 정리하고 이름 있는 볼륨을 유지합니다. 화요일 시연 기록도 남으므로, 목요일에는 방문 번호가 1이라고 가정하지 않습니다.
 
+**화요일 리허설** — README 초안대로 실행해 보고 성공한 VM에서 `docker compose version`, `docker compose exec web python --version`, `docker compose exec web pip show psycopg`, `docker compose exec db postgres --version` 결과를 README에 기록합니다. 위 시연을 종료했다면 먼저 `docker compose up -d`로 띄우고 확인 후 `docker compose down`으로 정리합니다.
+
 ## 목요일 · 팀원이 내 README만 보고 재현할 수 있을까?
 
 **빈칸 과제** — 진행자는 화요일 완성본을 참고용으로 두고 아래 세 조각을 보여 줍니다. 팀원은 각 줄이 어느 파일의 어느 위치에 들어가는지 설명하고, 자신의 Dockerfile과 Compose 파일에서 해당 줄을 완성합니다. 조각은 각각 기존 한 줄을 대체합니다.
@@ -177,6 +182,8 @@ Compose, web.depends_on.db 항목   condition: __3__
 ```
 
 **힌트** — ① 진행자가 제공한 Python 파일, ② 최상위 `volumes`에 선언한 이름, ③ 상태 검사를 통과해야 한다는 조건입니다.
+
+**30분 운영** — 다른 팀원의 VM에서 복제·설정 5분, 독립 실행 10분, 재기동 검증 10분, 피드백 5분으로 진행합니다.
 
 **저장소 교환** — 앱 전용 저장소에 `Dockerfile`, `docker-compose.yml`, `app.py`, `requirements.txt`, `site/index.html`, `.env.example`, `.gitignore`, `.dockerignore`, `README.md`를 공유합니다. README에는 필요한 도구, `.env.example`을 `.env`로 복사하고 새 로컬 암호로 바꾸는 방법, 실행 명령, 접속 주소, 종료·재기동 방법을 적습니다. 팀원은 다른 사람의 저장소를 **새 디렉터리에 복제**하고 그 README를 따라 합니다. 8080번에 기존 서비스가 있다면 먼저 해당 실습 서비스를 종료하세요.
 
@@ -204,3 +211,5 @@ curl -fsS --retry 5 --retry-connrefused "$base/visits" | grep -Fx "$before"
 - [ ] 블로그에 재현한 팀원, 실행 명령, DB 상태, 보존된 방문 번호를 공유했습니다. 실습이 끝나면 `docker compose down`으로 종료합니다.
 
 **정답** — ① `app.py`, ② `visits`, ③ `service_healthy`. 웹이 바로 꺼지면 `docker compose ps -a`와 `docker compose logs web db`를 먼저 확인합니다. 기존 DB 볼륨은 처음 초기화할 때의 암호를 유지하므로 재기동 시 같은 `.env`를 사용합니다.
+
+**개인 기록** — 화요일 전에 작성한 글에 목요일 예상, 실제 출력, 차이의 이유를 덧붙입니다. [팀원 실습 기록 보기]({{ '/' | relative_url }}#team-records)

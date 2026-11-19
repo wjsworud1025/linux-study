@@ -19,3 +19,21 @@ title: 전체 일정
 | [2주차 · 리눅스 실전 도구]({{ '/guides/week-2/' | relative_url }}) | 12/1 · 로그·프로세스·네트워크·SSH | 12/3 · 웹 서버 접속 문제 진단 |
 | [3주차 · 도커 기본]({{ '/guides/week-3/' | relative_url }}) | 12/8 · 이미지·컨테이너·저장소 | 12/10 · 컨테이너 교체와 데이터 유지 |
 | [4주차 · Compose 프로젝트]({{ '/guides/week-4/' | relative_url }}) | 12/15 · Dockerfile·네트워크·Compose | 12/17 · 서비스 재현과 방문 기록 검증 |
+
+## 매주 한 편의 실습 기록
+
+화요일 전에는 네 파트의 핵심 개념과 예상 결과를 개인 글 한 편에 정리합니다. 발표자는 8분 동안 결과 하나를 보여 주고, 목요일에는 같은 글에 새 조건에서의 예상·실제 출력·차이의 이유를 덧붙입니다. [첫 글 작성 방법]({{ '/guides/week-0/' | relative_url }})
+
+<h2 id="team-records">팀원 실습 기록</h2>
+{% assign record_count = 0 %}
+<ul>
+{% for entry in site.posts %}
+  {% unless entry.study_guide %}
+    {% assign record_count = record_count | plus: 1 %}
+    <li><a href="{{ entry.url | relative_url }}">{{ entry.title | escape }}</a> <small>· {{ entry.date | date: "%Y-%m-%d" }}{% if entry.author %} · {{ entry.author | escape }}{% endif %}</small></li>
+  {% endunless %}
+{% endfor %}
+</ul>
+{% if record_count == 0 %}
+<p>아직 등록된 실습 기록이 없습니다. 첫 글이 병합되고 배포되면 여기에 표시됩니다.</p>
+{% endif %}

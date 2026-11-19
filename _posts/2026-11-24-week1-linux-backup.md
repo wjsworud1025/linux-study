@@ -1,5 +1,6 @@
 ---
 permalink: /guides/week-1/
+study_guide: true
 layout: post
 title: "1주차 실습 가이드 · 우분투에서 소개 페이지를 만들고 백업하기"
 date: 2026-11-24 09:00:00 +0900
@@ -90,9 +91,12 @@ ls -l hello.sh
 
 ### 파트 4. 편집기로 페이지를 고치고 짧은 스크립트 실행하기
 
-1. `nano site/index.html`을 열고 마지막 줄에 `<p>매주 화요일과 목요일에 만납니다.</p>`를 추가합니다. **Ctrl+O → Enter → Ctrl+X**로 저장하고 닫습니다.
-2. `vi site/index.html`을 엽니다. `/스터디` 후 Enter로 제목을 찾고, `n`으로 다음 일치 항목을 찾습니다. `Esc` 후 `yy`, `p`로 현재 줄을 복제하고 `dd`로 복제한 줄을 삭제합니다.
-3. `i`로 입력 모드에 들어가 제목을 수정합니다. `Esc`로 일반 모드로 돌아와 `:wq` 후 Enter로 저장·종료합니다. 다시 열어 임시 변경을 한 번 더 만들고 `Esc`, `:q!`, Enter로 변경을 버립니다. `cat site/index.html`로 어떤 변경이 남았는지 확인합니다. 이 기본 조작은 vi와 Vim에서 공통으로 사용할 수 있습니다.
+**사전 연습** — 파트 ②의 페이지를 개인 VM에 미리 만들고 `nano site/index.html`을 열고 마지막 줄에 `<p>매주 화요일과 목요일에 만납니다.</p>`를 추가합니다. **Ctrl+O → Enter → Ctrl+X**로 저장하고 닫습니다.
+
+**발표 시연** — vi로 제목을 고치고 스크립트로 해당 파일명을 출력합니다.
+
+1. `vi site/index.html`을 엽니다. `/스터디` 후 Enter로 제목을 찾고, `n`으로 다음 일치 항목을 찾습니다. `Esc` 후 `yy`, `p`로 현재 줄을 복제하고 `dd`로 복제한 줄을 삭제합니다.
+2. `i`로 입력 모드에 들어가 제목을 수정합니다. `Esc`로 일반 모드로 돌아와 `:wq` 후 Enter로 저장·종료합니다. 다시 열어 임시 변경을 한 번 더 만들고 `Esc`, `:q!`, Enter로 변경을 버립니다. `cat site/index.html`로 어떤 변경이 남았는지 확인합니다. 이 기본 조작은 vi와 Vim에서 공통으로 사용할 수 있습니다.
 
 다음 블록은 현재 폴더에 `list-pages.sh`를 만듭니다. 실행 전, 출력에 어떤 파일명이 나올지 예상하세요.
 
@@ -173,6 +177,8 @@ diff -u "site/team intro.html" "backup/team intro.html"
 test ! -e backup/notes.txt && echo "텍스트 파일 제외 확인"
 ```
 
+짝이 새로 정한 이름으로 HTML 파일을 하나 추가하고, 스크립트 수정 없이 백업되는지 `diff -u`로 확인합니다.
+
 ### 3. 완료 기준과 제출
 
 - [ ] 첫 실행에서 `backup/` 폴더와 `backup/index.html`이 생겼습니다.
@@ -183,3 +189,5 @@ test ! -e backup/notes.txt && echo "텍스트 파일 제외 확인"
 **진행자용 정답** — 실습 후 대조하세요. ① `backup`, ② `mkdir -p`, ③ `*.html`, ④ `cp`, ⑤ `$backup_dir`. 완성된 복사 명령은 `cp "$page" "$backup_dir/"`입니다. 조건식 `[ -f "$page" ]`는 패턴에 일치하는 일반 파일이 있을 때만 복사를 수행합니다.
 
 마무리로 류현수 님이 2주차 로그·프로세스·네트워크·SSH 범위를 공지합니다. 다음 주 웹 서버 실습에 사용할 `site/index.html`은 그대로 보관하세요.
+
+**개인 기록** — 화요일 전에 작성한 글에 목요일 예상, 실제 출력, 차이의 이유를 덧붙입니다. [팀원 실습 기록 보기]({{ '/' | relative_url }}#team-records)

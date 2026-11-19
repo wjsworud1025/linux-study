@@ -1,5 +1,6 @@
 ---
 permalink: /guides/week-0/
+study_guide: true
 layout: post
 title: "0주차 실습 가이드 · 우분투 가상머신에서 팀 블로그 첫 글까지"
 date: 2026-11-19 09:00:00 +0900
@@ -12,7 +13,7 @@ tags: [ubuntu, virtualbox, github-pages]
 **11월 19일(목) · 진행 류현수**  
 **교재** 《Do it! 리눅스 입문》 02-1 가상화와 하이퍼바이저, 02-2 우분투 설치하기, 02-4 리눅스 셸과 기본 명령어
 
-오늘의 결과물은 두 가지입니다. 내 컴퓨터를 재시작해도 사용할 수 있는 우분투 가상머신과, 다른 팀원이 로그인 없이 읽을 수 있는 나의 첫 실습 글입니다. **관리자는 4단계를 팀당 한 번**, **팀원은 1~3단계와 5~7단계를 각자** 진행합니다. 관리자는 팀원이 우분투를 설치하는 동안 블로그를 준비해도 됩니다.
+**먼저 팀 저장소 초대를 수락하세요.** [linux-study 저장소](https://github.com/wjsworud1025/linux-study)의 기본 브랜치는 `main`, 글 폴더는 `_posts/`입니다. 관리자는 모임 전에 Settings → Collaborators에서 팀원을 초대합니다. 팀원은 가상머신을 준비하고 자기 계정으로 첫 글을 올립니다.
 
 ## 1. 내 컴퓨터에 설치 파일 준비하기
 
@@ -58,40 +59,17 @@ git --version
 
 `sudo`가 암호를 물으면 **우분투 로그인 암호**를 입력합니다. 입력 중 글자나 별표가 보이지 않아도 Enter를 누르면 됩니다.
 
-## 4. 팀 관리자 · 블로그 주소와 게시 경로 준비하기
+## 4. 기존 팀 블로그의 게시 위치 확인하기
 
-**기존 팀 블로그가 있다면** 현재 게시 구조와 배포 설정을 유지하고 저장소 주소, 기본 브랜치, 글 폴더, 블로그 주소를 팀원에게 공유합니다. 아래 예시는 Jekyll의 `main` 브랜치와 루트의 `_posts/`를 사용합니다. 배포 소스가 `/docs`인 팀은 글을 `docs/_posts/`에 둡니다.
-
-**새 팀 블로그라면** 다음과 같이 한 번만 설정합니다.
-
-1. GitHub에서 공개 저장소 `linux-study`를 만들고 **Add a README file**을 선택해 `main`을 생성합니다. **Settings → Collaborators**(조직은 접근 관리 메뉴)에서 팀원에게 쓰기 권한을 초대합니다. 팀원은 초대를 수락합니다.
-2. **Add file → Create new file**로 저장소 루트에 `_config.yml`을 만들고 아래 내용을 커밋합니다.
-
-   ```yaml
-   title: 리눅스 스터디
-   theme: minima
-   timezone: Asia/Seoul
-   ```
-
-3. 같은 방법으로 루트에 `index.md`를 만들고 아래 내용을 커밋합니다. 홈 레이아웃이 게시글 목록을 보여 줍니다.
-
-   ```markdown
-   ---
-   layout: home
-   title: 스터디 기록
-   ---
-   ```
-
-4. **Settings → Pages → Build and deployment**에서 **Deploy from a branch → main → /(root) → Save**를 선택합니다. 배포가 끝나면 **Visit site**로 홈을 엽니다. 주소는 보통 `https://팀계정.github.io/linux-study/`입니다.
-5. 저장소의 **Code → HTTPS**에서 복제 주소를 복사해 팀원에게 공유합니다. 복제 주소는 GitHub 저장소를 가리키고, 앞 단계의 Pages 주소는 독자가 방문할 블로그를 가리킵니다. [GitHub Pages 게시 소스 설정](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+[전체 일정]({{ '/' | relative_url }})과 [팀원 실습 기록]({{ '/' | relative_url }}#team-records)을 열어 봅니다. 이미 설정된 팀 저장소에 아래 단계로 개인 글을 추가합니다.
 
 ## 5. 팀원 · 내 가상머신에서 첫 글 작성하기
 
-우분투 브라우저로 GitHub에 로그인합니다. 터미널에서 아래 세 값을 입력합니다. 아이디에는 각자의 **GitHub 사용자 이름**, 복제 주소에는 관리자가 공유한 HTTPS 주소를 넣습니다.
+우분투 브라우저로 GitHub에 로그인합니다. 터미널에서 자신의 GitHub 아이디와 커밋 이메일을 입력합니다.
 
 ```bash
 read -rp "내 GitHub 아이디: " author
-read -rp "팀 저장소 HTTPS 복제 주소: " repo_url
+repo_url="https://github.com/wjsworud1025/linux-study.git"
 read -rp "커밋에 표시할 이메일: " git_email
 cd ~/linux-study
 git clone "$repo_url" team-blog
@@ -115,6 +93,7 @@ nano "$post"
 ---
 layout: post
 title: "0주차 · [내 아이디]의 우분투 설치 기록"
+author: "[내 GitHub 아이디]"
 categories: [study]
 tags: [ubuntu]
 ---
@@ -155,7 +134,7 @@ GitHub에서 **Compare & pull request**를 누르고 대상 브랜치가 팀의 
 ## 7. 공개된 첫 글 확인하기
 
 1. 저장소 **Actions**에서 병합한 커밋의 Pages 빌드·배포가 성공했는지 확인합니다.
-2. **Settings → Pages → Visit site** 또는 관리자가 공유한 블로그 주소로 이동해 홈의 글 목록에서 내 제목을 누릅니다.
+2. **Settings → Pages → Visit site** 또는 관리자가 공유한 블로그 주소로 이동해 홈의 [팀원 실습 기록]({{ '/' | relative_url }}#team-records)에서 내 제목을 누릅니다.
 3. 글의 **공개 주소**를 다른 팀원에게 보냅니다. 팀원이 로그아웃 상태나 시크릿 창에서 제목과 우분투 버전을 읽을 수 있으면 게시 완료입니다.
 
 | 막힌 지점 | 확인할 것 |

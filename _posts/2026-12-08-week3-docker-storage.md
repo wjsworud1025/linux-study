@@ -1,5 +1,6 @@
 ---
 permalink: /guides/week-3/
+study_guide: true
 layout: post
 title: "3주차 실습 가이드 · 컨테이너를 교체해도 소개 페이지 유지하기"
 date: 2026-12-08 09:00:00 +0900
@@ -38,13 +39,16 @@ docker exec w3-one touch /tmp/only-one
 docker exec w3-one ls /tmp/only-one
 docker exec w3-two ls /tmp/only-one
 docker image history nginx:alpine
+docker stop w3-one
+docker start w3-one
+docker exec w3-one ls /tmp/only-one
 docker stop w3-one w3-two
 docker rm w3-one w3-two
 docker tag nginx:alpine w3-image-demo:local
 docker rmi w3-image-demo:local
 ```
 
-두 번째 `ls`의 파일 없음 오류가 예상 결과입니다. 읽기 전용 이미지 레이어는 공유하지만 각 컨테이너의 쓰기 영역은 별도입니다. 마지막 두 명령은 실습용 태그를 붙였다가 제거합니다.
+두 번째 `ls`의 파일 없음 오류가 예상 결과입니다. 재시작한 w3-one의 마지막 ls에서 같은 파일이 남았는지 확인합니다. 목요일에는 새 컨테이너의 결과와 대조하세요. 읽기 전용 이미지 레이어는 공유하지만 각 컨테이너의 쓰기 영역은 별도입니다. 마지막 두 명령은 실습용 태그를 붙였다가 제거합니다.
 
 ### ③ 웹 서버의 포트·로그·내부 파일 관찰하기
 
@@ -128,3 +132,5 @@ docker run --rm -v "__1__:/site:ro" -v "__2__:/data:ro" alpine:3 sh -ec '
 - [ ] 페이지 편집에는 호스트에서 수정할 수 있는 바인드 마운트를, DB에는 컨테이너와 별도로 유지할 이름 있는 볼륨을 선택하는 이유를 각각 설명했습니다.
 
 **정답** — ① `$lab/site`, ② `$vol`. 4주차에는 컨테이너를 실행할 때마다 직접 입력했던 이미지·포트·볼륨 설정을 Compose 파일에 기록합니다.
+
+**개인 기록** — 화요일 전에 작성한 글에 목요일 예상, 실제 출력, 차이의 이유를 덧붙입니다. [팀원 실습 기록 보기]({{ '/' | relative_url }}#team-records)
