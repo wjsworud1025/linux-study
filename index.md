@@ -38,3 +38,5 @@ title: 전체 일정
 {% if record_count == 0 %}
 <p>아직 등록된 실습 기록이 없습니다. 첫 글이 병합되고 배포되면 여기에 표시됩니다.</p>
 {% endif %}
+
+{% include week4-results.html %}
