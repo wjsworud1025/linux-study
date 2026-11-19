@@ -1,0 +1,6 @@
+---
+layout: default
+---
+{% unless page.url == '/guides/week-0/' %}<h1>{{ page.title | escape }}</h1>{% endunless %}
+{{ content }}
+<p><a href="{{ '/' | relative_url }}">전체 일정으로 돌아가기</a></p>

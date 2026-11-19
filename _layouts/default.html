@@ -1,0 +1,6 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{ page.title | escape }} · {{ site.title }}</title>
+<style>
+*{box-sizing:border-box}body{margin:auto;max-width:58rem;padding:1.5rem;color:#192b31;font:1rem/1.75 system-ui,sans-serif;overflow-wrap:anywhere}nav{border-bottom:2px solid #17675b;padding-bottom:.8rem}nav a{margin-right:1rem}a{color:#086356;text-underline-offset:.2em}h1,h2,h3{line-height:1.35}h2{margin-top:2rem}table{border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:.6rem;text-align:left;border-bottom:1px solid #cadbd6}th{background:#eff6f3}pre{padding:1rem;background:#f2f5f4;overflow:auto}code{font-family:monospace}li{margin:.35rem 0}
+@media(max-width:600px){body{padding:1rem}th,td{padding:.45rem;word-break:keep-all}main table{max-width:100%}}
+</style></head><body><nav aria-label="스터디 메뉴"><a href="{{ '/' | relative_url }}">전체 일정</a><a href="{{ '/curriculum/' | relative_url }}">커리큘럼</a></nav><main>{{ content }}</main></body></html>

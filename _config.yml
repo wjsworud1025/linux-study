@@ -1,0 +1,6 @@
+title: 우분투 리눅스 스터디
+lang: ko
+timezone: Asia/Seoul
+future: true
+markdown: kramdown
+exclude: [README.md]
