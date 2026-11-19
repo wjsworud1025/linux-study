@@ -25,7 +25,9 @@
       const link = document.createElement('a');
       link.href = 'https://github.com/' + repo + '/issues/' + Number(issue.number);
       link.textContent = '#' + issue.number + ' ' + issue.title;
-      const verdict = (issue.body || '').match(/^\s*\*\*판정\*\*\s*[—:：-]\s*(성공|일부 성공|실패)\s*$/m);
+      const body = (issue.body || '').replace(/\r\n?/g, '\n');
+      const verdict = body.match(/^### 판정[ \t]*\n\s*(성공|일부 성공|실패)[ \t]*$/m)
+        || body.match(/^\s*\*\*판정\*\*\s*[—:：-]\s*(성공|일부 성공|실패)\s*$/m);
       const result = verdict ? verdict[1] : '판정 미기재';
       const isExample = issue.labels.some(label => label.name === 'automated-example');
       const list = isExample ? examples : members;
