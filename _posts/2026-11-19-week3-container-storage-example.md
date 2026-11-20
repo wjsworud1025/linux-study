@@ -1,5 +1,6 @@
 ---
 layout: post
+study_example: true
 title: "3주차 작성 예시 · 컨테이너를 바꾸면 세 파일 중 무엇이 남을까?"
 author: "스터디 작성 예시"
 categories: [study]

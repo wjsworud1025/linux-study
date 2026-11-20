@@ -1,5 +1,6 @@
 ---
 layout: post
+study_example: true
 title: "2주차 작성 예시 · 서버는 살아 있는데 왜 안내 주소가 열리지 않을까?"
 author: "스터디 작성 예시"
 categories: [study]

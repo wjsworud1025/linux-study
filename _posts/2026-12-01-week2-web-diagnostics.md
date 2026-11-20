@@ -21,8 +21,14 @@ diff -u site/index.html backup/index.html
 diff -u "site/team intro.html" "backup/team intro.html"
 mkdir -p ~/linux-study/week2/logs
 cd ~/linux-study/week2
+```
+
+직접 관리하는 VM에서 아래 명령으로 도구를 설치하고 SSH 서비스를 시작합니다. 진행자가 제공한 VM에서는 설치와 서비스 시작을 진행자가 맡습니다.
+
+```bash
 sudo apt update
 sudo apt install python3 curl netcat-openbsd openssh-server
+sudo systemctl start ssh
 ```
 
 ## 화요일 · 네 파트 시연
@@ -73,7 +79,6 @@ curl -sS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8080/index.html
 echo "$HOME"
 export STUDY_TOPIC=linux
 bash -c 'echo "$STUDY_TOPIC"'
-sudo systemctl start ssh
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
 ssh-keygen -t ed25519 -f ~/.ssh/study-week2
@@ -85,16 +90,18 @@ ssh -o PasswordAuthentication=no -i ~/.ssh/study-week2 "$USER@localhost" whoami
 
 ## 목요일 · “안내받은 주소에서 페이지가 안 열려요”
 
-**진행자 준비** — 각 VM에서 `ss -tln`으로 8080과 대체 포트가 비어 있는지 확인합니다. 진행자가 매번 다른 빈 포트를 고르고 팀원에게 값을 공개하지 않습니다. 화요일 서버는 먼저 종료하세요. 팀원에게는 안내 주소 `http://127.0.0.1:8080`만 전달합니다.
+**30분 과제 · 2인 1조** — 한 조가 하나의 Ubuntu VM과 터미널 두 개를 사용합니다. 준비·진단을 12분씩 두 번 진행하고, 남은 6분에 두 결과를 비교하고 정리합니다. 첫 검증이 끝나면 준비자가 서버를 종료하고 역할을 바꿉니다.
+
+**준비자** — `ss -tln`으로 8080과 대체 포트가 비어 있는지 확인하고, 화요일 서버가 남아 있으면 먼저 종료합니다. 8080이 아닌 빈 포트를 골라 준비 터미널에서 아래 명령을 실행합니다. 진단자에게는 `http://127.0.0.1:8080`만 전달합니다. 두 번째 준비자는 다른 빈 포트를 사용합니다.
 
 ```bash
 cd ~/linux-study/week2
-read -rp "진행자가 선택한 빈 포트: " challenge_port
+read -rp "준비자가 선택한 빈 포트: " challenge_port
 python3 -u -m http.server "$challenge_port" --bind 127.0.0.1 --directory ../week1/site >logs/challenge.log 2>&1 &
 challenge_pid=$!
 ```
 
-**팀원 과제** — 별도 터미널에서 실제 대기 포트를 찾고 아래 빈칸을 채웁니다. 첫 연결 실패는 의도된 증상입니다.
+**진단자** — 같은 VM의 별도 터미널에서 실제 대기 포트를 찾고 아래 빈칸을 채웁니다. 첫 연결 실패는 의도된 증상입니다.
 
 ```bash
 cd ~/linux-study/week2
@@ -117,8 +124,8 @@ grep '__3__' logs/challenge.log | tail -n 1
 - [ ] 없는 페이지의 404 응답과 요청 경로가 함께 찍힌 로그 한 줄을 제시했습니다.
 - [ ] 잘못된 포트에서는 서버에 연결하지 못했고, 404에서는 서버가 요청을 받아 응답했다는 차이를 설명했습니다.
 
-**정답 예시** — ① 해당 VM의 `ss -tlnp`에서 관찰한 값, ② `index.html`, ③ `404`. 팀 블로그에는 최초 증상, 실제 포트를 찾은 명령, 응답과 로그를 순서대로 남깁니다. 진행자는 서버를 시작했던 터미널에서 `kill "$challenge_pid"`로 정리합니다.
+**정답 예시** — ① 해당 VM의 `ss -tlnp`에서 관찰한 값, ② `index.html`, ③ `404`. 팀 블로그에는 최초 증상, 실제 포트를 찾은 명령, 응답과 로그를 순서대로 남깁니다. 준비자는 서버를 시작했던 터미널에서 `kill "$challenge_pid"`로 정리합니다. 역할을 바꾸기 전 필요한 로그 한 줄을 개인 기록에 옮깁니다.
 
-**다음 주 준비** — 우분투에 Docker Engine과 Compose 플러그인을 준비한 뒤 `docker run --rm hello-world`와 `docker compose version`을 실행합니다. VM에서 Docker에 관리자 권한이 필요한 경우 이번 과정의 Docker 명령에 `sudo`를 붙여 사용합니다. [우분투용 Docker 설치 안내](https://docs.docker.com/engine/install/ubuntu/)
+**3주차 사전 과제 · 30~45분** — 12/8(화) 모임 전에 자신의 우분투 VM에 Docker Engine과 Compose 플러그인을 설치합니다. `docker run --rm hello-world`가 성공하고 `docker compose version`에 버전이 출력되면 준비 완료입니다. Docker 접근 권한을 따로 설정하지 않은 경우 `sudo docker run --rm hello-world`로 확인하고 이후 Docker 명령에도 `sudo`를 붙입니다. 제공받은 VM에서는 진행자가 설치를 담당합니다. 안내받은 방법으로 두 확인 명령을 실행하고, 막히면 실행한 명령과 오류를 진행자에게 공유하세요. [우분투용 Docker 설치 안내](https://docs.docker.com/engine/install/ubuntu/)
 
 **개인 기록** — 화요일 전에 작성한 글에 목요일 예상, 실제 출력, 차이의 이유를 덧붙입니다. [팀원 실습 기록 보기]({{ '/' | relative_url }}#team-records)

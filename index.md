@@ -10,6 +10,8 @@ title: 전체 일정
 
 [전체 커리큘럼과 교재 범위 보기]({{ '/curriculum/' | relative_url }})
 
+**11/24(화) 전 준비** — [0주차 30분 환경 점검]({{ '/guides/week-0/' | relative_url }})에서 Ubuntu 터미널, GitHub 초대, 첫 글 PR 상태를 확인합니다.
+
 ## 전체 일정과 실습 가이드
 
 | 실습 가이드 | 화요일 · 이현종 | 목요일 · 류현수 |
@@ -29,7 +31,7 @@ title: 전체 일정
 {% assign record_count = 0 %}
 <ul>
 {% for entry in site.posts %}
-  {% unless entry.study_guide %}
+  {% unless entry.study_guide or entry.study_example %}
     {% assign record_count = record_count | plus: 1 %}
     <li><a href="{{ entry.url | relative_url }}">{{ entry.title | escape }}</a> <small>· {{ entry.date | date: "%Y-%m-%d" }}{% if entry.author %} · {{ entry.author | escape }}{% endif %}</small></li>
   {% endunless %}
@@ -37,6 +39,16 @@ title: 전체 일정
 </ul>
 {% if record_count == 0 %}
 <p>아직 등록된 실습 기록이 없습니다. 첫 글이 병합되고 배포되면 여기에 표시됩니다.</p>
+{% endif %}
+
+{% assign examples = site.posts | where: 'study_example', true %}
+{% if examples.size > 0 %}
+<h2>작성 예시</h2>
+<ul>
+{% for entry in examples %}
+  <li><a href="{{ entry.url | relative_url }}">{{ entry.title | escape }}</a></li>
+{% endfor %}
+</ul>
 {% endif %}
 
 {% include week4-results.html %}

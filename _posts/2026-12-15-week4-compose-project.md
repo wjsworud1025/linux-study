@@ -15,7 +15,7 @@ tags: [ubuntu, docker]
 
 ## 화요일 전 · 앱 골격과 README 초안 준비
 
-진행자는 아래 앱 골격을 먼저 공유합니다. 각자 README에 필요한 도구, 로컬 암호 설정, 기동 명령, 접속 주소와 방문 번호 확인 방법을 작성하고 필요한 이미지를 미리 받습니다.
+진행자는 아래 앱 골격을 먼저 공유합니다. 각자 README에 필요한 도구, 로컬 암호 설정, 기동 명령, 접속 주소와 방문 번호 확인 방법을 작성하고 필요한 이미지를 미리 받습니다. [공용 랩 README](https://github.com/wjsworud1025/linux-study-week4-lab#readme)로 한 번 리허설하고, 실제 명령과 기대 출력을 자기 프로젝트의 README에 옮깁니다.
 
 우분투에서 `docker version`과 `docker compose version`을 확인합니다. 다음 블록은 새 `week4` 디렉터리에서 한 번 실행하세요. 웹 서버는 `/` 요청을 기록하고, `/visits` 요청에는 기존 번호 목록만 반환합니다.
 
@@ -175,7 +175,7 @@ docker compose down
 
 {% include week4-results.html %}
 
-**교차 검증 시작** — [4주차 실습 저장소의 README](https://github.com/wjsworud1025/linux-study-week4-lab#readme)를 다른 팀원에게 전달합니다. 검증자는 새 디렉터리에 복제한 뒤 README만 따라 기동하고, 교체 전후의 DB 컨테이너 ID와 방문 번호를 기록합니다. 마치면 [결과 체크리스트](https://github.com/wjsworud1025/linux-study-week4-lab/issues/new?template=cross-check.yml)를 작성하고 이슈 주소를 개인 실습 기록에 덧붙이세요. 작성자는 검증자가 혼자 막힌 지점을 먼저 기록한 다음 도와줍니다.
+**교차 검증 시작** — 두 사람이 짝을 이뤄 각자의 앱 저장소 URL과 검증할 커밋 SHA를 교환합니다. 검증자는 짝의 저장소를 복제한 뒤 `git switch --detach 전달받은_SHA`를 실행합니다. `git rev-parse HEAD`로 대상 SHA가 맞는지 확인하고 **그 커밋의 README만** 따라 실행합니다. 작성자는 검증자가 막힌 단계와 오류를 기록한 다음 도와줍니다. 도움을 받아 완료한 경우 결과에 표시하고, 독립 실행 판정은 README를 보완한 뒤 새 검증에서 다시 받습니다.
 
 **빈칸 과제** — 진행자는 화요일 완성본을 참고용으로 두고 아래 세 조각을 보여 줍니다. 팀원은 각 줄이 어느 파일의 어느 위치에 들어가는지 설명하고, 자신의 Dockerfile과 Compose 파일에서 해당 줄을 완성합니다. 조각은 각각 기존 한 줄을 대체합니다.
 
@@ -187,32 +187,20 @@ Compose, web.depends_on.db 항목   condition: __3__
 
 **힌트** — ① 진행자가 제공한 Python 파일, ② 최상위 `volumes`에 선언한 이름, ③ 상태 검사를 통과해야 한다는 조건입니다.
 
-**30분 운영** — 다른 팀원의 VM에서 복제·설정 5분, 독립 실행 10분, 재기동 검증 10분, 피드백 5분으로 진행합니다.
+**30분 운영** — 짝 두 사람이 각자의 VM에서 동시에 상대 저장소를 검증합니다. 복제·설정 5분, 독립 실행 10분, 재기동 검증 10분, 피드백 5분으로 진행합니다. 사전에 짝의 저장소를 읽을 수 있는지와 Docker가 기동하는지 확인합니다.
 
-**저장소 교환** — 앱 전용 저장소에 `Dockerfile`, `docker-compose.yml`, `app.py`, `requirements.txt`, `site/index.html`, `.env.example`, `.gitignore`, `.dockerignore`, `README.md`를 공유합니다. README에는 필요한 도구, `.env.example`을 `.env`로 복사하고 새 로컬 암호로 바꾸는 방법, 실행 명령, 접속 주소, 종료·재기동 방법을 적습니다. 팀원은 다른 사람의 저장소를 **새 디렉터리에 복제**하고 그 README를 따라 합니다. 8080번에 기존 서비스가 있다면 먼저 해당 실습 서비스를 종료하세요.
+**작성자 준비** — 앱 전용 저장소에 `Dockerfile`, `docker-compose.yml`, `app.py`, `requirements.txt`, `site/index.html`, `.env.example`, `.gitignore`, `.dockerignore`, `README.md`를 공유합니다. README에는 필요한 도구와 버전, Docker 권한이 필요한 경우의 실행 방법, 로컬 암호 생성, 회차 고유 Compose 프로젝트 이름, 기동·종료 명령, 접속 주소, 아래 검증 순서와 기대 출력을 적습니다. 비밀번호와 `.env`는 로컬 VM에 둡니다.
 
-**재현 검증** — 아래는 검토자가 README의 결과와 대조할 명령입니다. 같은 디렉터리와 같은 터미널에서 순서대로 실행합니다.
-
-```bash
-docker compose config --quiet
-docker compose up -d --build
-docker compose ps
-base=http://127.0.0.1:8080
-curl -fsS --retry 5 --retry-connrefused "$base/"
-before=$(curl -fsS "$base/visits" | tail -n 1)
-printf '보존할 방문 번호: %s\n' "$before"
-docker compose logs --tail 10 web
-docker compose down
-docker compose up -d
-curl -fsS --retry 5 --retry-connrefused "$base/visits" | grep -Fx "$before"
-```
+**검증자 준비** — 검증 회차마다 새 디렉터리로 복제합니다. 짝의 README에 따라 회차별로 고유한 Compose 프로젝트 이름을 정하고, 모든 `docker compose` 명령에 같은 `-p 이름`을 붙입니다. 한 회차의 기동·종료·재기동에는 같은 이름과 `.env`를 사용합니다. 8080번이 사용 중이면 이전에 시작한 해당 실습 서비스를 먼저 종료하거나 다른 VM에서 실행합니다.
 
 **완료 기준**
 
-- [ ] 다른 팀원이 README만으로 환경설정을 채우고 `docker compose up -d --build`에 성공했습니다.
-- [ ] 브라우저 또는 `curl`로 **1주차 소개 문구와 방문 번호**를 확인했습니다. `docker compose ps`에는 DB가 healthy로, 웹 로그에는 `GET /` 요청이 표시됩니다.
-- [ ] `down`과 `up -d` 사이에 볼륨을 삭제하지 않았고, 마지막 명령이 재기동 **전에 기록한 방문 번호**를 출력합니다.
-- [ ] 블로그에 재현한 팀원, 실행 명령, DB 상태, 보존된 방문 번호를 공유했습니다. 실습이 끝나면 `docker compose down`으로 종료합니다.
+- [ ] 짝의 저장소 URL과 커밋 SHA를 확인하고, 그 커밋의 README만으로 설정과 기동을 완료했습니다.
+- [ ] DB가 healthy이고, HTTP 200 응답의 소개 페이지에서 **이번 요청으로 생성된 방문 번호**를 기록했습니다. 웹 로그에서 해당 요청의 200을 확인했습니다.
+- [ ] 볼륨을 유지한 채 종료 후 다시 기동했습니다. DB 컨테이너 ID가 바뀌었고, 조회 전용 `/visits`에서 저장해 둔 번호를 다시 읽었습니다.
+- [ ] 서비스를 종료하고 [결과 체크리스트](https://github.com/wjsworud1025/linux-study-week4-lab/issues/new?template=cross-check.yml)에 대상 URL·커밋, 실행 환경, 독립 실행 여부와 관찰값을 제출했습니다. 개인 실습 글에 이슈 링크를 남겼습니다.
+
+실패한 경우 마지막으로 성공한 단계와 오류를 관찰값에 남깁니다. 진행자는 제출된 커밋과 관찰값을 대조해 완료 여부를 확인합니다.
 
 **정답** — ① `app.py`, ② `visits`, ③ `service_healthy`. 웹이 바로 꺼지면 `docker compose ps -a`와 `docker compose logs web db`를 먼저 확인합니다. 기존 DB 볼륨은 처음 초기화할 때의 암호를 유지하므로 재기동 시 같은 `.env`를 사용합니다.
 

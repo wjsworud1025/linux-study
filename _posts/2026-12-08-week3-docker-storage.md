@@ -13,7 +13,7 @@ tags: [ubuntu, docker]
 
 ## 준비 · 같은 페이지를 다른 서버에서 열기
 
-우분투 VM에서 `cat ~/linux-study/week1/site/index.html`로 소개 페이지를 확인합니다. `docker version`에 Client와 Server가 모두 나오고 `docker compose version`이 성공해야 합니다. `ss -tln`에서 8080이 비어 있는지 확인합니다. 앞 주의 서버가 남아 있다면 해당 서버를 실행한 터미널에서 종료하세요.
+[2주차의 Docker 사전 과제]({{ '/guides/week-2/' | relative_url }})를 모임 전에 마칩니다. 우분투 VM에서 `cat ~/linux-study/week1/site/index.html`로 소개 페이지를 확인합니다. `docker version`에 Client와 Server가 모두 나오고 `docker compose version`이 성공해야 합니다. VM에서 Docker 접근에 관리자 권한이 필요하면 `sudo`를 붙입니다. `ss -tln`에서 8080이 비어 있는지 확인합니다. 앞 주의 서버가 남아 있다면 해당 서버를 실행한 터미널에서 종료하세요.
 
 ## 화요일 · 네 파트 시연
 

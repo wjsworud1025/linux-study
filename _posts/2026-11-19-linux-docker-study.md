@@ -36,7 +36,7 @@ tags: [ubuntu, linux, bash, docker]
 
 **11/19(목) 진행** — 우분투 가상머신을 준비하고 터미널에서 `cat /etc/os-release`, `whoami`, `pwd`를 실행합니다. `~/linux-study`를 만든 뒤 각자 팀 저장소에 이름과 실습 환경을 Markdown으로 올립니다. 류현수 님이 1주차 네 주제와 백업 과제를 공지합니다.
 
-**완료 기준** — 각자 우분투 버전과 작업 경로를 확인하고, 자신이 올린 글을 팀 블로그 주소에서 열 수 있습니다. [GitHub Pages 시작하기](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
+**완료 기준** — 각자 우분투 버전과 작업 경로를 확인하고, 자신이 올린 글을 팀 블로그 주소에서 열 수 있습니다. [11/24 전 30분 환경 점검]({{ '/guides/week-0/' | relative_url }}). [GitHub Pages 시작하기](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 
 ## 1주차 · 파일을 만들고 백업을 자동화하기
 
@@ -64,9 +64,11 @@ tags: [ubuntu, linux, bash, docker]
 3. **네트워크** — `ss -tlnp`로 대기 주소와 포트를 찾고, `nc -zv 호스트 포트`로 TCP 연결을, `curl`로 HTTP 응답을 확인합니다. 루프백 주소와 모든 IPv4 인터페이스에 바인딩했을 때의 접속 범위를 비교합니다.
 4. **환경변수와 SSH** — `echo "$HOME"`, `export`를 연습합니다. `ssh-keygen`으로 키 쌍을 만들고 실습 계정에 공개키를 등록한 뒤 `ssh 사용자@호스트`로 접속합니다. 개인키는 본인 기기에 보관합니다.
 
-**12/3(목) 과제** — 진행자가 안내문과 다른 포트에 1주차 소개 페이지를 띄웁니다. 팀원은 서버 프로세스, 대기 포트, HTTP 응답, 접속 로그를 확인해 페이지가 열리지 않은 이유를 찾습니다.
+**12/3(목) 과제** — 팀원은 2인 1조로 준비자와 진단자를 번갈아 맡습니다. 준비자는 안내문과 다른 포트에 1주차 소개 페이지를 띄웁니다. 진단자는 서버 프로세스, 대기 포트, HTTP 응답, 접속 로그를 확인해 페이지가 열리지 않은 이유를 찾습니다.
 
-**완료 기준** — 실제 접속 주소와 정상 페이지의 HTTP 200 응답을 제시합니다. 없는 페이지도 요청해 HTTP 404가 기록된 로그 한 줄을 찾고, 최초 접속 실패와 404의 원인을 구분해 설명합니다. 모임을 마치기 전 다음 주 준비로 `docker run --rm hello-world`와 `docker compose version`을 확인합니다. [우분투용 Docker 설치 안내](https://docs.docker.com/engine/install/ubuntu/)
+**완료 기준** — 실제 접속 주소와 정상 페이지의 HTTP 200 응답을 제시합니다. 없는 페이지도 요청해 HTTP 404가 기록된 로그 한 줄을 찾고, 최초 접속 실패와 404의 원인을 구분해 설명합니다. 다음 주에는 같은 소개 페이지를 컨테이너에서 제공합니다.
+
+**3주차 사전 준비 (30~45분)** — 12/8(화) 모임 전에 각자 우분투 VM에 Docker Engine과 Compose 플러그인을 설치하고 `docker run --rm hello-world`와 `docker compose version`이 성공하는지 확인합니다. VM에서 Docker를 실행할 때 관리자 권한이 필요하면 `sudo docker run --rm hello-world`로 확인합니다. [우분투용 Docker 설치 안내](https://docs.docker.com/engine/install/ubuntu/)
 
 ## 3주차 · 컨테이너로 소개 페이지 운영하기
 
@@ -94,10 +96,11 @@ tags: [ubuntu, linux, bash, docker]
 3. **네트워크** — 기본 bridge와 `docker network create`로 만든 사용자 정의 네트워크를 비교합니다. 같은 사용자 정의 네트워크에서 컨테이너 이름으로 통신한 뒤, Compose에서 서비스 이름으로 DB에 연결합니다.
 4. **Compose** — `docker-compose.yml`의 `services`, `image`, `build`, `ports`, `volumes`, `environment`를 읽습니다. 실제 비밀번호는 로컬 `.env`에 두고 저장소에는 `.env.example`만 공유합니다. DB에 `healthcheck`를 정의하고 웹 서비스의 `depends_on`에 `condition: service_healthy`를 설정합니다.
 
-**12/17(목) 최종 과제** — 화요일까지 진행자가 웹 앱 골격을 공유하고 팀원은 README 초안을 준비합니다. 팀원은 Dockerfile, Compose 설정, 실행 안내를 완성하고 서로 저장소를 교환합니다.
+**12/17(목) 최종 과제** — 화요일까지 진행자가 웹 앱 골격을 공유하고 팀원은 Dockerfile, Compose 설정, README를 완성합니다. 공용 랩으로 리허설한 뒤 두 사람이 짝을 이뤄 각자의 앱 저장소 URL과 검증할 커밋을 교환합니다.
 
 **완료 기준**
 
-- 다른 팀원이 README를 따라 환경설정을 채우고 `docker compose up -d --build`로 서비스를 실행합니다.
-- 소개 페이지에 접속한 뒤 `docker compose ps`에서 DB 상태를, `docker compose logs`에서 웹 요청을 확인합니다.
-- `docker compose down` 후 다시 기동해 첫 방문 기록이 DB에 남아 있음을 확인합니다. 각자 재현에 사용한 명령과 결과를 팀 블로그에 남깁니다.
+- 검증자는 짝의 저장소를 지정한 커밋으로 준비해 그 README만으로 설정하고 서비스를 기동합니다.
+- DB healthy와 웹 HTTP 200을 확인하고 소개 페이지 응답에서 이번 요청의 방문 번호를 기록합니다.
+- 같은 Compose 프로젝트에서 볼륨을 유지한 채 DB 컨테이너를 교체합니다. 교체 전후 DB 컨테이너 ID가 다르고, 조회 전용 `/visits`에서 저장한 번호를 다시 읽으면 통과입니다.
+- 대상 저장소 URL과 커밋, 독립 실행 여부, 관찰값을 [결과 양식](https://github.com/wjsworud1025/linux-study-week4-lab/issues/new?template=cross-check.yml)에 제출하고 이슈 링크를 개인 실습 글에 남깁니다. [4주차 검증 절차]({{ '/guides/week-4/' | relative_url }}).

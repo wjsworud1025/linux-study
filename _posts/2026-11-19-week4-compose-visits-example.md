@@ -1,5 +1,6 @@
 ---
 layout: post
+study_example: true
 title: "4주차 작성 예시 · DB 컨테이너를 다시 만들어도 첫 방문 번호가 남을까?"
 author: "스터디 작성 예시"
 categories: [study]

@@ -23,7 +23,7 @@ tags: [ubuntu, virtualbox, github-pages]
 | --- | --- |
 | Intel 또는 AMD x64 Windows | VirtualBox 7과 Ubuntu Desktop 24.04 LTS AMD64. 아래 설치 순서를 따릅니다. |
 | Apple Silicon Mac | UTM과 Ubuntu Server 24.04 LTS ARM64. [Ubuntu 24.04 ARM64 설치 이미지](https://cdimage.ubuntu.com/ubuntu/releases/24.04/release/)에서 **64-bit ARM (ARMv8/AArch64) server install image**를 받고, [UTM Ubuntu 가이드](https://docs.getutm.app/guides/ubuntu/)를 따라 **Virtualize → Linux**로 새 VM에 설치합니다. 설치 후 콘솔에 로그인하고 3단계로 이동합니다. |
-| Windows on Arm 또는 로컬 가상화·설치 권한이 없는 기기 | 진행자에게 Git과 nano가 설치된 준비된 Ubuntu VM과 개인 계정을 요청합니다. 제공받은 방법으로 로그인한 뒤 3단계로 이동합니다. |
+| Windows on Arm 또는 로컬 가상화·설치 권한이 없는 기기 | 진행자에게 Git과 nano가 설치된 준비된 Ubuntu VM과 개인 계정을 요청합니다. 제공받은 방법으로 로그인한 뒤 3단계로 이동합니다. 진행자는 이 VM에 2주차 실습 도구와 SSH 서비스, 3주차 Docker Engine·Compose 플러그인을 미리 준비하고 팀원에게 접속·실행 방법을 안내합니다. |
 
 ### x64 Windows에서 설치 파일 받기
 

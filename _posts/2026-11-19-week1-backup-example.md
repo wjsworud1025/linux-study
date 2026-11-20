@@ -1,5 +1,6 @@
 ---
 layout: post
+study_example: true
 title: "1주차 작성 예시 · 소개 페이지를 고치고 다시 백업하면?"
 author: "스터디 작성 예시"
 categories: [study]
