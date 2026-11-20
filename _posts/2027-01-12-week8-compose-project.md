@@ -8,14 +8,14 @@ categories: [study]
 tags: [ubuntu, docker]
 ---
 
-**1/12(화) 이현종 · 1/14(목) 류현수**  
+**1/12(화) 이현종 · 이론 90분 / 1/14(목) 류현수 · 실습 60분**  
 **교재 범위** — 07-2(환경 변수), 08-1(웹 동작) 복습과 Compose 시작 순서 공식 문서. [Compose 시작 순서](https://docs.docker.com/compose/how-tos/startup-order/)
 
 이번 주에는 **소개 페이지를 한 번 열 때마다 DB에 방문 번호를 하나 기록**합니다. 마지막에는 팀원이 내 README만 보고 서비스를 실행하고 검증 중 남긴 방문 기록을 다시 읽어야 합니다. GitHub Pages에는 실습 글을 게시하고, 아래 앱은 각자의 우분투 VM에서 실행합니다.
 
-## 화요일 전 · 앱 골격과 README 초안 준비
+## 시연 자료 · 앱 골격과 README
 
-진행자는 아래 앱 골격을 먼저 공유합니다. 각자 README에 필요한 도구, 로컬 암호 설정, 기동 명령, 접속 주소와 방문 번호 확인 방법을 작성하고 필요한 이미지를 미리 받습니다. [공용 랩 README](https://github.com/wjsworud1025/linux-study-week4-lab#readme)로 한 번 리허설하고, 실제 명령과 기대 출력을 자기 프로젝트의 README에 옮깁니다.
+진행자는 아래 앱 골격과 [공용 랩 README](https://github.com/wjsworud1025/linux-study-week4-lab#readme)로 화요일 시연을 준비합니다. 조원은 이론 수업 후 목요일 전까지 자기 저장소에서 시연 내용을 재현하고 실행 방법과 기대 출력을 README에 정리합니다. 목요일 전에 짝과 저장소 URL과 검증할 SHA를 교환합니다.
 
 우분투에서 `docker version`과 `docker compose version`을 확인합니다. 다음 블록은 새 `week8` 디렉터리에서 한 번 실행하세요. 웹 서버는 `/` 요청을 기록하고, `/visits` 요청에는 기존 번호 목록만 반환합니다.
 
@@ -67,7 +67,17 @@ HTTPServer(("0.0.0.0", 8000), Handler).serve_forever()
 PY
 ```
 
-## 화요일 · 웹과 DB 구성 및 리허설
+## 화요일 이론 · 웹과 DB 구성 및 리허설
+
+| 시간 | 학습 내용 |
+| --- | --- |
+| 0~10분 | **저장소와 이름 해석 복습** · 6주차 볼륨과 7주차 이름 기반 통신을 웹·DB 구성에 연결합니다. |
+| 10~35분 | **Compose 서비스와 준비 순서** · services, 내부 네트워크, 환경 변수, 상태 검사, depends_on의 역할을 구성 파일을 읽으며 확인합니다. |
+| 35~60분 | **DB 보존과 재현 가능한 README** · 볼륨의 수명, 교체 전후 컨테이너 ID, 쓰는 경로와 읽는 경로의 차이, 커밋 SHA와 필요한 실행 정보를 설명합니다. |
+| 60~80분 | **기동과 재조회 시연** · 진행자가 공용 랩을 띄우고 기록한 방문 번호를 DB 교체 후 조회합니다. 조원은 각 완료 기준의 증거를 찾습니다. |
+| 80~90분 | **짝 검증 준비** · 목요일 전 공유할 저장소 URL·SHA, README에 필요한 명령, 제출할 관찰값을 정리합니다. |
+
+아래 명령은 진행자의 시연 자료입니다. 결과를 먼저 예상하고 실제 출력에서 판단 근거를 찾습니다.
 
 ### ① 7주차 Dockerfile을 웹 앱에 적용하기
 
@@ -135,7 +145,11 @@ docker compose down
 
 **화요일 리허설** — README 초안대로 실행해 보고 성공한 VM에서 `docker compose version`, `docker compose exec web python --version`, `docker compose exec web pip show psycopg`, `docker compose exec db postgres --version` 결과를 README에 기록합니다. 위 시연을 종료했다면 먼저 `docker compose up -d`로 띄우고 확인 후 `docker compose down`으로 정리합니다.
 
-## 목요일 · 팀원이 내 README만 보고 재현할 수 있을까?
+## 목요일 실습 · 팀원이 내 README만 보고 재현할 수 있을까?
+
+**60분 운영** · 복습·준비 10분, 직접 실습 30분, 결과 비교 15분, 정리 5분
+
+짝과 대상 URL·SHA, Docker 실행 환경을 확인한 뒤, 두 사람이 상대 README로 동시에 독립 검증합니다.
 
 {% include week4-results.html %}
 
