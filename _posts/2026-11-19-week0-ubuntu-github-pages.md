@@ -23,7 +23,7 @@ tags: [ubuntu, virtualbox, github-pages]
 | --- | --- |
 | Intel 또는 AMD x64 Windows | VirtualBox 7과 Ubuntu Desktop 24.04 LTS AMD64. 아래 설치 순서를 따릅니다. |
 | Apple Silicon Mac | UTM과 Ubuntu Server 24.04 LTS ARM64. [Ubuntu 24.04 ARM64 설치 이미지](https://cdimage.ubuntu.com/ubuntu/releases/24.04/release/)에서 **64-bit ARM (ARMv8/AArch64) server install image**를 받고, [UTM Ubuntu 가이드](https://docs.getutm.app/guides/ubuntu/)를 따라 **Virtualize → Linux**로 새 VM에 설치합니다. 설치 후 콘솔에 로그인하고 3단계로 이동합니다. |
-| Windows on Arm 또는 로컬 가상화·설치 권한이 없는 기기 | 진행자에게 Git과 nano가 설치된 준비된 Ubuntu VM과 개인 계정을 요청합니다. 제공받은 방법으로 로그인한 뒤 3단계로 이동합니다. 진행자는 이 VM에 2주차 실습 도구와 SSH 서비스, 3주차 Docker Engine·Compose 플러그인을 미리 준비하고 팀원에게 접속·실행 방법을 안내합니다. |
+| Windows on Arm 또는 로컬 가상화·설치 권한이 없는 기기 | 진행자에게 Git과 nano가 설치된 준비된 Ubuntu VM과 개인 계정을 요청합니다. 제공받은 방법으로 로그인한 뒤 3단계로 이동합니다. 진행자는 이 VM에 3주차 웹 실습 도구, 4주차 SSH 서비스, 5주차 Docker Engine·Compose 플러그인을 미리 준비하고 팀원에게 접속·실행 방법을 안내합니다. |
 
 ### x64 Windows에서 설치 파일 받기
 
@@ -153,4 +153,4 @@ GitHub에서 **Compare & pull request**를 누르고 대상 브랜치가 팀의 
 | 병합했는데 홈에 글이 없음 | 해당 커밋의 배포 상태, 게시 소스와 글 폴더, 파일명의 날짜 및 확장자, 본문 첫 줄의 `---`를 확인합니다. VM 날짜가 미래라면 파일명을 실제 게시일로 고칩니다. |
 | 블로그 주소에서 404가 뜸 | 저장소 이름이 포함된 Pages 주소인지 확인하고, 첫 배포가 끝난 뒤 관리자 화면의 Visit site로 다시 엽니다. |
 
-**0주차 완료 기준** — 각자 배정받거나 직접 준비한 우분투에 다시 로그인할 수 있고, `~/linux-study`에서 확인한 환경 정보가 자신의 첫 글에 담겨 있으며, 다른 팀원이 공개 주소로 그 글을 읽을 수 있습니다. 마지막으로 류현수 님이 1주차 발표 범위와 소개 페이지 백업 과제를 공지합니다.
+**0주차 완료 기준** — 각자 배정받거나 직접 준비한 우분투에 다시 로그인할 수 있고, `~/linux-study`에서 확인한 환경 정보가 자신의 첫 글에 담겨 있으며, 다른 팀원이 공개 주소로 그 글을 읽을 수 있습니다. 마지막으로 류현수 님이 1주차 발표 범위와 소개 페이지 파일·권한 과제를 공지합니다.

@@ -1,27 +1,27 @@
 ---
-permalink: /guides/week-4/
+permalink: /guides/week-8/
 study_guide: true
 layout: post
-title: "4주차 실습 가이드 · 소개 페이지와 방문 기록 DB를 다른 팀원 환경에서 재현하기"
-date: 2026-12-15 09:00:00 +0900
+title: "8주차 실습 가이드 · 소개 페이지와 방문 기록 DB를 짝의 환경에서 재현하기"
+date: 2027-01-12 09:00:00 +0900
 categories: [study]
 tags: [ubuntu, docker]
 ---
 
-**12/15(화) 이현종 · 12/17(목) 류현수**  
-**교재** 《Do it! 리눅스 입문》 07-2(환경 변수), 08-1(웹 동작 방식) 복습. 이미지 빌드와 다중 컨테이너는 [Docker 워크숍](https://docs.docker.com/learn/paths/get-started-with-docker-containers/)과 [Compose 시작 순서](https://docs.docker.com/compose/how-tos/startup-order/)를 사용합니다.
+**1/12(화) 이현종 · 1/14(목) 류현수**  
+**교재 범위** — 07-2(환경 변수), 08-1(웹 동작) 복습과 Compose 시작 순서 공식 문서. [Compose 시작 순서](https://docs.docker.com/compose/how-tos/startup-order/)
 
-이번 주에는 **소개 페이지를 한 번 열 때마다 DB에 방문 번호를 하나 기록**합니다. 마지막에는 팀원이 내 README만 보고 서비스를 실행하고 첫 방문 기록까지 다시 읽어야 합니다. GitHub Pages에는 실습 글을 게시하고, 아래 앱은 각자의 우분투 VM에서 실행합니다.
+이번 주에는 **소개 페이지를 한 번 열 때마다 DB에 방문 번호를 하나 기록**합니다. 마지막에는 팀원이 내 README만 보고 서비스를 실행하고 검증 중 남긴 방문 기록을 다시 읽어야 합니다. GitHub Pages에는 실습 글을 게시하고, 아래 앱은 각자의 우분투 VM에서 실행합니다.
 
 ## 화요일 전 · 앱 골격과 README 초안 준비
 
 진행자는 아래 앱 골격을 먼저 공유합니다. 각자 README에 필요한 도구, 로컬 암호 설정, 기동 명령, 접속 주소와 방문 번호 확인 방법을 작성하고 필요한 이미지를 미리 받습니다. [공용 랩 README](https://github.com/wjsworud1025/linux-study-week4-lab#readme)로 한 번 리허설하고, 실제 명령과 기대 출력을 자기 프로젝트의 README에 옮깁니다.
 
-우분투에서 `docker version`과 `docker compose version`을 확인합니다. 다음 블록은 새 `week4` 디렉터리에서 한 번 실행하세요. 웹 서버는 `/` 요청을 기록하고, `/visits` 요청에는 기존 번호 목록만 반환합니다.
+우분투에서 `docker version`과 `docker compose version`을 확인합니다. 다음 블록은 새 `week8` 디렉터리에서 한 번 실행하세요. 웹 서버는 `/` 요청을 기록하고, `/visits` 요청에는 기존 번호 목록만 반환합니다.
 
 ```bash
-mkdir -p ~/linux-study/week4
-cd ~/linux-study/week4
+mkdir -p ~/linux-study/week8
+cd ~/linux-study/week8
 mkdir -p site
 cp ~/linux-study/week1/site/index.html site/
 printf '%s\n' 'psycopg[binary]>=3.2,<4' > requirements.txt
@@ -67,11 +67,11 @@ HTTPServer(("0.0.0.0", 8000), Handler).serve_forever()
 PY
 ```
 
-## 화요일 · 네 파트 시연
+## 화요일 · 웹과 DB 구성 및 리허설
 
-### ① Dockerfile로 실행 환경 만들기
+### ① 7주차 Dockerfile을 웹 앱에 적용하기
 
-`week4`에서 아래 파일을 만듭니다. `WORKDIR`는 뒤의 복사·실행 기준 경로이고, `RUN`은 빌드 중에, `CMD`는 컨테이너가 시작할 때 실행됩니다.
+`week8`에서 아래 파일을 만듭니다. `WORKDIR`는 뒤의 복사·실행 기준 경로이고, `RUN`은 빌드 중에, `CMD`는 컨테이너가 시작할 때 실행됩니다.
 
 ```bash
 cat > Dockerfile <<'EOF'
@@ -85,49 +85,13 @@ CMD ["python", "-u", "app.py"]
 EOF
 printf '%s\n' '.env' '.git' '__pycache__' > .dockerignore
 printf '%s\n' '.env' '__pycache__/' > .gitignore
-docker build -t study-web:w4 .
-docker run --rm study-web:w4 python --version
-docker run --name w4-exit study-web:w4
 ```
 
-마지막 실행은 DB 환경 설정이 없어 종료됩니다. `docker ps -a`와 `docker logs w4-exit`에서 종료 상태와 오류를 찾고 `docker rm w4-exit`로 예제 컨테이너를 정리합니다. 위의 `python --version`은 기본 `CMD`를 대체합니다. `ENTRYPOINT`가 지정된 이미지에서는 실행 시 인수가 그 진입점에 전달됩니다.
+7주차 페이지 이미지에 웹 앱을 실행할 Python과 의존성을 추가했습니다. `CMD`는 컨테이너가 시작할 때 웹 앱을 실행합니다.
 
-### ② 캐시를 확인하고 이미지 배포하기
+### ② Compose로 웹과 DB 함께 띄우기
 
-```bash
-printf '%s\n' '<p>Compose 실습</p>' >> site/index.html
-docker build --progress=plain -t study-web:w4 .
-docker image history study-web:w4
-```
-
-페이지를 바꾼 뒤 `pip install` 단계가 캐시를 재사용했는지 빌드 출력에서 찾습니다. 의존성 목록을 소스보다 먼저 복사하면 페이지 수정 때 패키지를 다시 설치할 필요가 없습니다. `.dockerignore`는 빌드 문맥에서, `.gitignore`는 Git 추적 대상에서 로컬 설정 파일을 제외합니다.
-
-**진행자 배포 시연** — 본인이 게시할 Docker Hub 저장소 `study-web`을 만든 뒤 아래 명령을 실행합니다. 비밀번호나 인증 화면은 블로그에 올리지 않습니다.
-
-```bash
-read -rp "Docker Hub 사용자명: " hub_user
-docker login
-docker tag study-web:w4 "$hub_user/study-web:w4"
-docker push "$hub_user/study-web:w4"
-```
-
-### ③ 사용자 정의 네트워크에서 이름으로 통신하기
-
-```bash
-docker network inspect bridge
-docker network create w4-demo-net
-docker run -d --name w4-peer --network w4-demo-net nginx:alpine
-docker run --rm --network w4-demo-net alpine:3 wget -qO- http://w4-peer
-docker stop w4-peer
-docker rm w4-peer
-docker network rm w4-demo-net
-```
-
-포트를 호스트에 게시하지 않아도 같은 사용자 정의 네트워크의 컨테이너가 이름으로 HTTP 요청을 보낼 수 있습니다. 기본 bridge와 달리 사용자 정의 bridge에는 컨테이너 이름을 해석하는 DNS가 제공됩니다. 아래 앱의 `host="db"`도 Compose 서비스 이름을 사용합니다.
-
-### ④ Compose로 웹과 DB 함께 띄우기
-
-`week4`에 다음 블록으로 파일을 만듭니다. `.env.example`에는 예시 키만 공유하고 실제 실습 암호는 각 VM에서 생성합니다. 이미 만들어 둔 `.env`는 유지합니다.
+`week8`에 다음 블록으로 파일을 만듭니다. `.env.example`에는 예시 키만 공유하고 실제 실습 암호는 각 VM에서 생성합니다. 이미 만들어 둔 `.env`는 유지합니다.
 
 ```bash
 printf '%s\n' 'DB_PASSWORD=replace-with-local-password' > .env.example
@@ -160,7 +124,7 @@ volumes:
   visits:
 YAML
 docker compose config --quiet
-docker compose up -d --build
+docker compose up -d --build --wait
 docker compose ps
 curl -fsS --retry 5 --retry-connrefused http://127.0.0.1:8080/
 docker compose logs --tail 10 web
