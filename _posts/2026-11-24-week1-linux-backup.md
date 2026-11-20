@@ -153,20 +153,25 @@ done
 
 ### 2. 첫 실행과 재실행 검증하기
 
-아래 명령은 이번 주 실습 폴더에서 실행합니다. 첫 실행 전 `backup/`이 이미 있다면 기존 결과를 보관하고, 별도의 새 실습 폴더에서 검증하세요.
+첫 실행은 `backup/`이 없는 임시 폴더에서 검증합니다. 이번 주 실습 폴더의 기존 백업은 그대로 두고, `site/`와 완성한 `backup.sh`만 복사합니다.
 
 ```bash
 cd ~/linux-study/week1
 chmod u+x backup.sh
 bash -n backup.sh
+backup_lab=$(mktemp -d)
+cp -r site backup.sh "$backup_lab/"
+cd "$backup_lab"
 ./backup.sh
 ls -l backup
 diff -u site/index.html backup/index.html
 ```
 
-`bash -n`은 문법을 검사합니다. 빈칸을 잘못 채워도 문법 검사는 통과할 수 있으므로 실제 복사 결과까지 확인하세요. 이제 **공백이 있는 새 HTML 파일**, **수정된 원본**, **백업 대상에서 제외할 파일**을 함께 준비합니다.
+`bash -n`은 문법을 검사합니다. 빈칸을 잘못 채워도 문법 검사는 통과할 수 있으므로 실제 복사 결과까지 확인하세요. 이제 원래의 1주차 폴더로 돌아가 기준 백업을 만든 뒤, **공백이 있는 새 HTML 파일**, **수정된 원본**, **백업 대상에서 제외할 파일**로 재실행을 검증합니다. 2주차에서 이 폴더의 결과를 사용합니다.
 
 ```bash
+cd ~/linux-study/week1
+./backup.sh
 printf '%s\n' '<h1>팀원 소개</h1>' > "site/team intro.html"
 printf '%s\n' '<p>목요일 백업 실습</p>' >> site/index.html
 printf '%s\n' '개인 메모' > site/notes.txt
@@ -181,7 +186,7 @@ test ! -e backup/notes.txt && echo "텍스트 파일 제외 확인"
 
 ### 3. 완료 기준과 제출
 
-- [ ] 첫 실행에서 `backup/` 폴더와 `backup/index.html`이 생겼습니다.
+- [ ] 임시 폴더의 첫 실행에서 `backup/` 폴더와 `backup/index.html`이 생겼습니다.
 - [ ] 재실행 후 두 `diff -u` 명령이 아무 차이도 출력하지 않습니다. 원본 수정 사항과 공백이 있는 파일명 모두 보존됐습니다.
 - [ ] 마지막 명령이 **텍스트 파일 제외 확인**을 출력합니다.
 - [ ] 팀 블로그에 완성한 스크립트, 재실행 후 `ls -l backup` 결과, 원본과 복사본의 내용이 같다고 판단한 근거를 게시합니다.
